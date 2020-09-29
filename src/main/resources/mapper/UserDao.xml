@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qing.bookstore.dao.UserDao">
+	<resultMap type="com.qing.bookstore.entity.User" id="userResult">
+              <!--其中id为主键，result为普通字段,property对应实体类属性，column对应字段名（更准确的说应该是查询结果集中的字段名）-->
+              <id property="uid" column="uid"/>
+              <result property="uname" column="uname"/>
+              <result property="password" column="password"/>
+              <result property="gender" column="gender"/>
+              <result property="phone" column="phone"/>
+              <result property="email" column="email"/>
+              <result property="address" column="address"/>
+       </resultMap>
+       
+       <!-- 插入数据后获得自增主键的值 -->
+       <insert id="insert" keyProperty="id" keyColumn="uid">
+              INSERT INTO user
+                     (uname,password,gender,phone,email,address)
+              VALUES
+                     (#{uname},#{password},#{gender},#{phone},#{email},#{address})
+       </insert>
+       
+       <!-- 修改用户内容 -->
+       <update id="update">
+              UPDATE user
+              <set>
+                     uname=#{uname},
+                     password=#{password},
+                     gender=#{gender},
+                   	 phone=#{phone},
+                     email=#{email},
+                     address=#{address},
+              </set>       
+              <where>
+                     uid=#{uid}
+              </where>       
+       </update>
+       
+       <!-- 根据id删除用户 -->
+       <delete id="delete">
+              DELETE FROM user WHERE uid=#{uid}
+       </delete>
+       
+       <!-- 根据id查询用户 -->
+       <select id="findById" resultMap="userResult">
+              SELECT * FROM user WHERE uid=#{uid}
+       </select>
+       
+       <!-- 查询所有用户 -->
+       <select id="findAll" resultMap="userResult">
+              SELECT * FROM user
+       </select>
+</mapper>
+

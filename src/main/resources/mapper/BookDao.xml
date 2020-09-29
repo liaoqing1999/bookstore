@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qing.bookstore.dao.BookDao">
+	<resultMap type="com.qing.bookstore.entity.Book" id="bookResult">
+              <!--其中id为主键，result为普通字段,property对应实体类属性，column对应字段名（更准确的说应该是查询结果集中的字段名）-->
+              <id property="bid" column="bid"/>
+              <result property="bname" column="bname"/>
+              <result property="detail" column="detail"/>
+              <result property="price" column="price"/>
+              <result property="writer" column="writer"/>
+              <result property="printer" column="printer"/>
+              <result property="date" column="date"/>
+              <result property="type" column="type"/>
+              <result property="image" column="image"/>
+              <result property="store" column="store"/>
+              <result property="state" column="state"/>
+       </resultMap>
+       
+       <!-- 插入数据后获得自增主键的值 -->
+       <insert id="insert" keyProperty="id" keyColumn="bid">
+              INSERT INTO book
+                     (bname,detail,price,writer,printer,date,type,image,store,state)
+              VALUES
+                     (#{bname},#{detail},#{price},#{printer},#{writer},#{date},#{type},#{image},#{store},#{state})
+       </insert>
+       
+       <!-- 修改书籍内容 -->
+       <update id="update">
+              UPDATE book
+              <set>
+                     bname=#{bname},
+                     detail=#{detail},
+                     price=#{price},
+                   	 writer=#{writer},
+                   	 printer=#{printer},
+                     date=#{date},
+                     type=#{type},
+                     image=#{image},
+                     store=#{store},
+                     state=#{state},
+              </set>
+              <where>
+                     bid=#{bid}
+              </where>
+       </update>
+       
+       <!-- 根据id删除书籍 -->
+       <delete id="delete">
+              DELETE FROM book WHERE bid=#{bid}
+       </delete>
+       
+       <!-- 根据id查询书籍 -->
+       <select id="findById" resultMap="bookResult">
+              SELECT * FROM book WHERE bid=#{bid}
+       </select>
+       
+       <!-- 查询所有书籍 -->
+       <select id="findAll" resultMap="bookResult">
+              SELECT * FROM book
+       </select>
+       <!-- 分页查询书籍 -->
+       <select id="queryStudentsBySql" resultMap="bookResult">
+              select * FROM book 
+              <where>
+              	state like CONCAT('%',#{state},'%') and (
+            		bname like CONCAT('%',#{cond},'%')
+            		or detail like CONCAT('%',#{cond},'%')
+            		or writer like CONCAT('%',#{cond},'%')
+            		or printer like CONCAT('%',#{cond},'%')
+            		or type like CONCAT('%',#{cond},'%')
+            		or price like CONCAT('%',#{cond},'%'))
+            </where>
+              order by ${sort} limit #{currIndex} , #{pageSize} 
+       </select>
+       
+      
+       <select id="searchAll" resultMap="bookResult">
+              select * FROM book 
+              <where>
+            		bname like CONCAT('%',#{cond},'%')
+            		or detail like CONCAT('%',#{cond},'%')
+            		or writer like CONCAT('%',#{cond},'%')
+            		or printer like CONCAT('%',#{cond},'%')
+            		or type like CONCAT('%',#{cond},'%')
+            		or price like CONCAT('%',#{cond},'%')
+            </where>
+        </select>
+</mapper>
+

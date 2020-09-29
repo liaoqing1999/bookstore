@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qing.bookstore.dao.BookOrderDao">
+	<resultMap type="com.qing.bookstore.entity.BookOrder" id="bookOrderResult">
+              <!--其中id为主键，result为普通字段,property对应实体类属性，column对应字段名（更准确的说应该是查询结果集中的字段名）-->
+              <id property="oid" column="oid"/>
+              <result property="date" column="date"/>
+              <result property="oname" column="oname"/>
+              <result property="address" column="address"/>
+              <result property="status" column="status"/>
+              <result property="uid" column="uid"/>
+       </resultMap>
+       
+       <!-- 插入数据后获得自增主键的值 -->
+       <insert id="insert" keyProperty="id" keyColumn="oid">
+              INSERT INTO book_order
+                     (date,oname,address,status,uid)
+              VALUES
+                     (#{date},#{oname},#{address},#{status},#{uid})
+       </insert>
+       
+       <!-- 修改用户内容 -->
+       <update id="update">
+              UPDATE book_order
+              <set>
+                     date=#{date},
+                     oname=#{oname},
+                     address=#{address},
+                   	 status=#{status},
+                     uid=#{uid},
+              </set>       
+              <where>
+                     oid=#{oid}
+              </where>
+       </update>
+       
+       <!-- 根据id删除用户 -->
+       <delete id="delete">
+              DELETE FROM book_order WHERE oid=#{oid}
+       </delete>
+       
+       <!-- 根据id查询用户 -->
+       <select id="findById" resultMap="bookOrderResult">
+              SELECT * FROM book_order WHERE oid=#{oid}
+       </select>
+       
+       <!-- 查询所有用户 -->
+       <select id="findAll" resultMap="bookOrderResult">
+              SELECT * FROM book_order
+       </select>
+</mapper>
+
